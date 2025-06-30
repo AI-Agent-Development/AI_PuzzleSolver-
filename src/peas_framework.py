@@ -1,14 +1,4 @@
-"""
-PEAS Framework for 8-Puzzle AI Agent
-
-This file defines the PEAS (Performance, Environment, Actuators, Sensors) description
-of the 8-puzzle solving intelligent agent.
-"""
-
 def get_peas_framework() -> dict:
-    """
-    Returns the PEAS framework for the 8-puzzle problem.
-    """
     peas = {
         "Performance Measure": [
             "Minimize the number of moves to reach the goal state",
@@ -30,9 +20,6 @@ def get_peas_framework() -> dict:
 
 
 def display_peas_framework():
-    """
-    Prints the PEAS framework in a readable format.
-    """
     peas = get_peas_framework()
     print("PEAS Framework for 8-Puzzle AI Agent\n")
     for category, details in peas.items():
