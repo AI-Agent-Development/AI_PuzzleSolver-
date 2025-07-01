@@ -1,3 +1,4 @@
+from collections import deque
 from typing import List, Tuple, Optional
 class EightPuzzle:
     def __init__(self, board: List[int]):
@@ -61,4 +62,42 @@ class EightPuzzle:
         return hash(self.board)
 
     def __lt__(self, other):
-        return self.board < other.board 
+        return self.board < other.board
+
+    @staticmethod
+    def solve(start: 'EightPuzzle') -> Optional[List[str]]:
+        """Solve the 8-puzzle using BFS. Return list of moves if solved, else None."""
+        visited = set()
+        queue = deque()
+        queue.append((start, []))  # (current_state, path_to_state)
+
+        while queue:
+            current, path = queue.popleft()
+
+            if current.is_goal():
+                return path  # Found solution!
+
+            visited.add(current)
+
+            for move, new_state in current.get_successors():
+                if new_state not in visited:
+                    queue.append((new_state, path + [move]))
+
+        return None  # No solution found
+
+
+
+if __name__ == "__main__":
+    initial_board = [1, 2, 3, 5, 0, 6, 4, 7, 8]
+    puzzle = EightPuzzle(initial_board)
+
+    print("Initial board:")
+    print(puzzle)
+
+    solution = puzzle.solve(puzzle)
+    if solution:
+        print("\nSolution found!")
+        print("Moves:", solution)
+        print("Total steps:", len(solution))
+    else:
+        print("No solution found.")
