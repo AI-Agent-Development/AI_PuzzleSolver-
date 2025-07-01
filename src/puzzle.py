@@ -1,12 +1,15 @@
 from collections import deque
 from typing import List, Tuple, Optional
 class EightPuzzle:
-    def __init__(self, board: List[int]):
-        if len(board) != 9:
-            raise ValueError("Board must have 9 elements.")
+    def __init__(self, board: List[int], goal: Optional[List[int]] = None):
+        """Initialize the puzzle with a board and an optional goal state."""
+        if goal is None:
+            goal = list(range(1, 9)) + [0]
+        if len(board) != 9 or any(n < 0 or n > 8 for n in board):
+            raise ValueError("Board must contain numbers 0-8 and have 9 elements.")
         self.board = tuple(board)
         self.size = 3
-        self.goal = tuple(range(1, 9)) + (0,)
+        self.goal = tuple(goal)
 
     def is_goal(self) -> bool:
         return self.board == self.goal
@@ -41,7 +44,7 @@ class EightPuzzle:
             swap_pos = row * self.size + col
             new_board = list(self.board)
             new_board[zero_pos], new_board[swap_pos] = new_board[swap_pos], new_board[zero_pos]
-            return EightPuzzle(new_board)
+            return EightPuzzle(new_board, self.goal)
         return None
 
     def get_successors(self) -> List[Tuple[str, 'EightPuzzle']]:
@@ -64,37 +67,53 @@ class EightPuzzle:
     def __lt__(self, other):
         return self.board < other.board
 
-    @staticmethod
-    def solve(start: 'EightPuzzle') -> Optional[List[str]]:
-        """Solve the 8-puzzle using BFS. Return list of moves if solved, else None."""
-        visited = set()
-        queue = deque()
-        queue.append((start, []))  # (current_state, path_to_state)
+    def is_solvable(self) -> bool:
+        """Check if the current board can reach the goal board based on inversion parity."""
+        return self.count_inversions(self.board) % 2 == self.count_inversions(self.goal) % 2
 
-        while queue:
-            current, path = queue.popleft()
+    def count_inversions(self, board: List[int]) -> int:
+        """Count the number of inversions in the board."""
+        arr = [n for n in board if n != 0]
+        inversions = 0
+        for i in range(len(arr)):
+            for j in range(i + 1, len(arr)):
+                if arr[i] > arr[j]:
+                    inversions += 1
+        return inversions
 
-            if current.is_goal():
-                return path  # Found solution!
 
-            visited.add(current)
+def solve(start: 'EightPuzzle') -> Optional[List[str]]:
+    """Solve the 8-puzzle using BFS. Return list of moves if solved, else None."""
+    visited = set()
+    queue = deque()
+    queue.append((start, []))  # (current_state, path_to_state)
 
-            for move, new_state in current.get_successors():
-                if new_state not in visited:
-                    queue.append((new_state, path + [move]))
+    if not start.is_solvable():
+        print("This puzzle is unsolvable based on inversion parity.")
+        return None
 
-        return None  # No solution found
+    while queue:
+        current, path = queue.popleft()
+
+        if current.is_goal():
+            return path  # Found solution!
+
+        visited.add(current)
+
+        for move, new_state in current.get_successors():
+            if new_state not in visited:
+                queue.append((new_state, path + [move]))
+
+    return None  # No solution found
 
 
 
 if __name__ == "__main__":
-    initial_board = [1, 2, 3, 5, 0, 6, 4, 7, 8]
-    puzzle = EightPuzzle(initial_board)
+    initial_board = [1, 2, 5,3, 0, 6, 4, 7, 8]
+    goal = (1, 2, 4, 3, 5, 6, 0, 7, 8)
+    puzzle = EightPuzzle(initial_board, goal)
 
-    print("Initial board:")
-    print(puzzle)
-
-    solution = puzzle.solve(puzzle)
+    solution = solve(puzzle)
     if solution:
         print("\nSolution found!")
         print("Moves:", solution)
