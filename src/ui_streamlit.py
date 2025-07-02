@@ -24,11 +24,16 @@ def main():
 
     example = "1 2 3 4 0 5 6 7 8"
     puzzle_input = st.text_input("Puzzle Input (e.g., 1 2 3 4 0 5 6 7 8):", value=example)
+    puzzle_goal_input = st.text_input("Puzzle Goal Input (e.g., 1 2 3 4 5 6 7 8 0):", value="1 2 3 4 5 6 7 8 0")
 
     algorithm = st.radio("Choose Algorithm", ["A* Search", "Breadth-First Search"])
 
     if st.button("Solve Puzzle"):
         board = parse_input(puzzle_input)
+        goal = parse_input(puzzle_goal_input)
+
+        if goal is None:
+            goal = list(range(1, 9)) + [0]
 
         if board is None:
             st.error("❌ Invalid input. Please enter numbers 0–8 without duplicates.")
@@ -36,15 +41,16 @@ def main():
 
         st.subheader("Initial State:")
         display_board(board)
+        print("Initial Board:", board)
 
-        if not is_solvable(board):
-            st.error("❌ This puzzle is not solvable.")
+        if not is_solvable(board, goal):
+            st.error("❌ This puzzle is not solvable based on inversion parity.")
             return
 
         method = "a_star" if algorithm == "A* Search" else "bfs"
 
         st.info("Solving...")
-        moves = solve_puzzle(board, method)
+        moves = solve_puzzle(board, goal, method)
 
         if moves is None:
             st.error("❌ No solution found.")
