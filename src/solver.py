@@ -10,6 +10,8 @@ def solve_puzzle(board: List[int], goal: List[int], method: str = "a_star") -> O
     puzzle = EightPuzzle(board, goal)
 
     if method == "bfs":
+        print("bfs")
         return bfs(puzzle)
     else:
+        print("a*")
         return a_star(puzzle)

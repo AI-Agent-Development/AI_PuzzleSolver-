@@ -46,7 +46,7 @@ def displayResultInGrid(st, moves, current):
             if i + j < len(moves):
                 move = moves[i + j]
                 current = current.move(move)
-                cols[j].markdown(f"**Step {i + j + 1}: {move}**")
+                cols[j].markdown(f"**S {i + j + 1}: {move}**")
                 # Use the extracted function to render the grid
                 html_grid = render_puzzle_grid(current.board)
                 cols[j].write(
