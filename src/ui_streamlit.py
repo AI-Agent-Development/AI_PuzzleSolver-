@@ -19,7 +19,7 @@ def display_board(board):
         st.write(" | ".join(str(num) if num != 0 else "_" for num in row))
 
 def main():
-    st.title("🧠 AI Puzzle Solver - 8 Puzzle")
+    st.title("AI Puzzle Solver - 8 Puzzle")
     st.markdown("Enter the puzzle board using numbers 0–8 (use 0 for the blank space).")
 
     example = "1 2 3 4 0 5 6 7 8"

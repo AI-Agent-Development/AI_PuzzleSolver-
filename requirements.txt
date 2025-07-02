@@ -1,0 +1,8 @@
+If you have your project environment ready, just run this command in your terminal (inside your virtual environment):
+bash 
+pip install -r requirements.txt 
+This creates a complete list of all installed packages and their versions in your environment.
+or
+If you want a simple typical list for an 8-puzzle AI project using Streamlit, here is a starting point:
+bash
+streamlit==1.24.0
