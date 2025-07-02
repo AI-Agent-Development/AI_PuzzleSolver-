@@ -1,6 +1,6 @@
 import streamlit as st
 from puzzle import EightPuzzle
-from utils import is_solvable
+from utils import displayResultInGrid, is_solvable
 from solver import solve_puzzle
 
 def parse_input(input_text):
@@ -41,7 +41,6 @@ def main():
 
         st.subheader("Initial State:")
         display_board(board)
-        print("Initial Board:", board)
 
         if not is_solvable(board, goal):
             st.error("❌ This puzzle is not solvable based on inversion parity.")
@@ -57,10 +56,8 @@ def main():
         else:
             st.success(f"✅ Solved in {len(moves)} moves!")
             current = EightPuzzle(board)
-            for i, move in enumerate(moves, 1):
-                current = current.move(move)
-                st.markdown(f"Step {i}: {move}")
-                display_board(current.board)
+            displayResultInGrid(st, moves, current)
+
 
 if __name__ == "__main__":
     main()

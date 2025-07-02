@@ -4,7 +4,6 @@ from utils import is_solvable
 from algorithms import bfs, a_star
 
 def solve_puzzle(board: List[int], goal: List[int], method: str = "a_star") -> Optional[List[str]]:
-
     if not is_solvable(board, goal):
         return None
 
