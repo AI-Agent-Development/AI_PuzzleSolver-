@@ -1,13 +1,15 @@
 from collections import deque
 import heapq
+import time
 from typing import List, Tuple, Optional
 from puzzle import EightPuzzle
 from utils import manhattan_distance
 
-def bfs(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
+def bfs(start: EightPuzzle) -> Tuple[Optional[List[str]], int, float]:
     visited = set()
     queue = deque([(start, [])])
     nodes_explored = 0
+    start_time = time.time()
 
     while queue:
         current_state, path = queue.popleft()
@@ -18,18 +20,23 @@ def bfs(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
         visited.add(current_state)
 
         if current_state.is_goal():
-            return path, nodes_explored
+            elapsed_time = time.time() - start_time
+            return path, nodes_explored, elapsed_time
 
         for move, next_state in current_state.get_successors():
             if next_state not in visited:
                 queue.append((next_state, path + [move]))
 
-    return None, nodes_explored
-def a_star(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
+    elapsed_time = time.time() - start_time
+    return None, nodes_explored, elapsed_time
+
+
+def a_star(start: EightPuzzle) -> Tuple[Optional[List[str]], int, float]:
     visited = set()
     heap = []
     heapq.heappush(heap, (manhattan_distance(start.board), 0, start, []))
     nodes_explored = 0
+    start_time = time.time()
 
     while heap:
         f, g, current_state, path = heapq.heappop(heap)
@@ -40,7 +47,8 @@ def a_star(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
         visited.add(current_state)
 
         if current_state.is_goal():
-            return path, nodes_explored
+            elapsed_time = time.time() - start_time
+            return path, nodes_explored, elapsed_time
 
         for move, next_state in current_state.get_successors():
             if next_state not in visited:
@@ -49,4 +57,5 @@ def a_star(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
                 f_new = g_new + h_new
                 heapq.heappush(heap, (f_new, g_new, next_state, path + [move]))
 
-    return None, nodes_explored
+    elapsed_time = time.time() - start_time
+    return None, nodes_explored, elapsed_time
