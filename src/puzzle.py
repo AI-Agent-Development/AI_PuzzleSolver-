@@ -86,7 +86,7 @@ def solve(start: 'EightPuzzle') -> Optional[List[str]]:
     """Solve the 8-puzzle using BFS. Return list of moves if solved, else None."""
     visited = set()
     queue = deque()
-    queue.append((start, []))  # (current_state, path_to_state)
+    queue.append((start, []))
 
     if not start.is_solvable():
         print("This puzzle is unsolvable based on inversion parity.")
@@ -96,7 +96,7 @@ def solve(start: 'EightPuzzle') -> Optional[List[str]]:
         current, path = queue.popleft()
 
         if current.is_goal():
-            return path  # Found solution!
+            return path 
 
         visited.add(current)
 
@@ -104,7 +104,7 @@ def solve(start: 'EightPuzzle') -> Optional[List[str]]:
             if new_state not in visited:
                 queue.append((new_state, path + [move]))
 
-    return None  # No solution found
+    return None  
 
 
 
