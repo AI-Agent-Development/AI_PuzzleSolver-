@@ -25,6 +25,8 @@ def bfs(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
                 queue.append((next_state, path + [move]))
 
     return None, nodes_explored
+
+
 def a_star(start: EightPuzzle) -> Tuple[Optional[List[str]], int]:
     visited = set()
     heap = []
