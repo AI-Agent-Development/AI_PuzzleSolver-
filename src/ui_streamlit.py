@@ -68,12 +68,12 @@ def main():
         results = {}
 
         for alg_name, method in methods:
-            moves, explored = solve_puzzle(board, goal, method)
-            results[alg_name] = (moves, explored)
+            moves, explored, elapsed = solve_puzzle(board, goal, method)
+            results[alg_name] = (moves, explored, elapsed)
 
         col1, col2 = st.columns(2)
 
-        for col, (alg_name, (moves, explored)) in zip([col1, col2], results.items()):
+        for col, (alg_name, (moves, explored, elapsed)) in zip([col1, col2], results.items()):
             with col:
                 with st.container():
                     st.subheader(f"{alg_name} Result")
@@ -82,6 +82,7 @@ def main():
                     else:
                         st.success(f"✅ Solved in {len(moves)} moves!")
                         st.info(f"🔍 Nodes Explored: {explored}")
+                        st.info(f"⏱️ Time Taken: {elapsed:.10f} seconds")
                         current = EightPuzzle(board)
                         displayResultInGrid(st, moves, current)
 

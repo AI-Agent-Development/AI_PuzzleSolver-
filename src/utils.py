@@ -39,12 +39,24 @@ def render_puzzle_grid(board: List[int]) -> str:
     return f"<table style='border-collapse:collapse; margin-top:5px'>{grid}</table>"
 
 def displayResultInGrid(st, moves: List[str], current) -> None:
+    original = current
+    move_sequence = []
+
+    move_emojis = {"right": "➡️", "down": "⬇️", "left": "⬅️", "up": "⬆️"}
+    move_str = " ".join(move_emojis.get(m.lower(), m) for m in moves)
+
+    st.markdown(
+        f"<div style='text-align:center; margin-top:16px; margin-bottom:16px'><strong>Moves:</strong> {move_str}</div>",
+        unsafe_allow_html=True
+    )
+
     for i in range(0, len(moves), 3):
         cols = st.columns(3)
         for j in range(3):
             if i + j < len(moves):
                 move = moves[i + j]
                 current = current.move(move)
+                move_sequence.append(move)
                 label = f"S {i + j + 1}: {move}"
                 html_grid = render_puzzle_grid(current.board)
                 html = f"""
@@ -62,3 +74,4 @@ def displayResultInGrid(st, moves: List[str], current) -> None:
                 </div>
                 """
                 cols[j].write(html, unsafe_allow_html=True)
+
