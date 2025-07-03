@@ -4,23 +4,11 @@ An AI-powered solver for the classic 8-puzzle problem, implementing search algor
 
 ## Project Structure
 
-AI_PUZZLE_SOLVER.PDF
-├── src/
-│ ├── puzzle.py # Puzzle state and logic
-│ ├── algorithms.py # Search algorithms implementations (A*, BFS, etc.)
-│ ├── utils.py # Utility functions for puzzle and result display
-│ ├── peasframework.py # PEAS framework definition for the problem
-│ ├── solver.py # Puzzle solving orchestration and helpers
-│ └── streamlit.py # Streamlit UI for user interaction
-│
-├── docs/
-│ └── AI_puzzle_solver.pdf # Project report and documentation
-│
-├── test/
-│ └── test_solver.py # Unit tests for the solver functions
-│
-├── requirements.txt # Python dependencies
-└── README.md # Project overview and instructions 
+- src/: Contains all the source code modules related to the puzzle solver project.
+- docs/: Contains project documentation and report PDFs.
+- test/: Holds unit tests to validate solver functionality.
+- requirements.txt: Lists the Python libraries your project depends on.
+- README.md: Provides a project overview, setup instructions, and usage.
 
 
 ## Setup Instructions
